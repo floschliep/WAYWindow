@@ -223,10 +223,15 @@ static float kWAYWindowDefaultTrafficLightButtonsTopMargin = 0;
 	_dummyTitlebarAccessoryViewController.fullScreenMinHeight = titleBarHeight;
 	[self addTitlebarAccessoryViewController:_dummyTitlebarAccessoryViewController];
 	
-	NSRect frame = self.frame;
-	frame.size.height += delta;
-	frame.origin.y -= delta;
-	
+    if (self.frameAutosaveName) {
+        [self setFrameUsingName:self.frameAutosaveName];
+    }
+    NSRect frame = self.frame;
+    frame.size.height += delta;
+    frame.size.height -= titleBarHeight; // prevent increasing the window height after every launch
+    frame.origin.y -= delta;
+    frame.origin.y += titleBarHeight; // prevent changing the window position after every launch
+    
 	[self _setNeedsLayout];
 	[self setFrame:frame display:NO]; // NO is important.
 }
