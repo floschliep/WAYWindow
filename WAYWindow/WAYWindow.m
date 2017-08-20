@@ -341,8 +341,14 @@ static float kWAYWindowDefaultTrafficLightButtonsTopMargin = 0;
 		else
 			frame.origin.y = NSHeight(standardButton.superview.frame)-NSHeight(standardButton.frame)-_trafficLightButtonsTopMargin;
 		
-		frame.origin.x = _trafficLightButtonsLeftMargin +idx*(NSWidth(frame) + 6);
-		[standardButton setFrame:frame];
+        CGFloat buttonMargin= 6;
+        if (NSApp.userInterfaceLayoutDirection == NSUserInterfaceLayoutDirectionLeftToRight) {
+            frame.origin.x = _trafficLightButtonsLeftMargin + idx*(NSWidth(frame) + buttonMargin);
+        } else {
+            frame.origin.x = NSMaxX(standardButton.superview.bounds) - _trafficLightButtonsLeftMargin - (idx+1)*NSWidth(frame) - idx*buttonMargin;
+        }
+        
+        [standardButton setFrame:frame];
 	}];
 }
 
